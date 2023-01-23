@@ -1,5 +1,22 @@
 console.log("Welcome to player")
 // initialise the variables
+
+// let songs = [
+    
+//     {
+//         srn: 1,
+//         title: 'Halki Si Barsaat',
+//         banner: '-',
+//         location: 'E:\js projects\music application\songs\1.mp3'
+//     },
+//     {
+//         srn: 6,
+//         title: 'Ram Siya Ram, Siya Ram Jai Jai Ram',
+//         banner: '-',
+//         location: 'E:\js projects\music application\songs\6.mp3'
+//     }
+
+// ]
 let songIndex = 5;
 let audioElement = new Audio(`songs/${songIndex}.mp3`);
 let masterPlay = document.getElementById('masterPlay');
@@ -54,7 +71,7 @@ myProgressBar.addEventListener('change', () => {
 // when foreward button clicked
 foreward.addEventListener('click', () => {
     whenPaused();
-    if (songIndex < 5) {
+    if (songIndex < 6) {
         songIndex++;
         audioElement = new Audio(`songs/${songIndex}.mp3`);
         console.log(songIndex);
@@ -100,7 +117,7 @@ function whenPaused() {
 
 }
 function whenPlayed() {
-   
+
     audioElement.play();
     play.classList.remove('fa-play');
     play.classList.add('fa-pause');
@@ -108,10 +125,10 @@ function whenPlayed() {
     masterPlay.classList.add('fa-pause');
     gif.style.opacity = 1;
 
-        // songBanner.style.display = 'block'; 
+    // songBanner.style.display = 'block'; 
 
     songBanner.style.background = `url('images/${songIndex}.jpg')`
-    
+
     songBanner.style.backgroundSize = 'cover';
 }
 
