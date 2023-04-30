@@ -1,23 +1,5 @@
-console.log("Welcome to player")
-// initialise the variables
-
-// let songs = [
-    
-//     {
-//         srn: 1,
-//         title: 'Halki Si Barsaat',
-//         banner: '-',
-//         location: 'E:\js projects\music application\songs\1.mp3'
-//     },
-//     {
-//         srn: 6,
-//         title: 'Ram Siya Ram, Siya Ram Jai Jai Ram',
-//         banner: '-',
-//         location: 'E:\js projects\music application\songs\6.mp3'
-//     }
-
-// ]
-let songIndex = 5;
+console.log("**--------------Welcome to player -----------------**")
+let songIndex = 1;
 let audioElement = new Audio(`songs/${songIndex}.mp3`);
 let masterPlay = document.getElementById('masterPlay');
 let myProgressBar = document.getElementById('myProgressBar');
@@ -26,9 +8,10 @@ let gif = document.getElementById('gif');
 let myelement = Array.from(document.getElementsByClassName('songName'));
 let foreward = document.getElementById('foreward');
 let backward = document.getElementById('backward');
-let play = document.getElementById(`s${songIndex}`);
+let player = document.getElementById(`s${songIndex}`);
+let box = document.getElementById('box');
 let bannerImage = `$images/${songIndex}.jpg`;
-
+let total = 1124 - 125;
 
 
 // play pause using master play
@@ -39,76 +22,91 @@ masterPlay.addEventListener('click', () => {
     }
     else {
         whenPaused();
-
     }
 })
+
 // play pause using play button in front of the song name
-play.addEventListener('click', () => {
-    if (audioElement.paused || audioElement.currentTime <= 0) {
-        whenPlayed();
+function updateplay() {
+    player.addEventListener('click', () => {
+        if (audioElement.paused || audioElement.currentTime <= 0) {
+            whenPlayed();
 
-    }
-    else {
-        whenPaused();
+        }
+        else {
+            whenPaused();
 
-    }
-})
+        }
+    })
+}
+
 // timeupdate when the song is played
-audioElement.addEventListener('timeupdate', () => {
+function timeupdater() {
+    audioElement.addEventListener('timeupdate', () => {
+        let progress = parseInt(audioElement.currentTime / audioElement.duration * 100);
+        myProgressBar.style.width = `${progress}%`;
+    })
+}
 
-    let progress = parseInt(audioElement.currentTime / audioElement.duration * 100)
-
-
-    myProgressBar.value = progress;
-})
 
 // change in progress bar 
-myProgressBar.addEventListener('change', () => {
-    audioElement.currentTime = myProgressBar.value * audioElement.duration / 100;
+box.addEventListener('click', (e) => {
+    console.log(e.clientX);
+    let fraction = (e.clientX - 125) / 1000;
+    audioElement.currentTime = (fraction * (audioElement.duration));
 
 })
+
 
 // when foreward button clicked
 foreward.addEventListener('click', () => {
     whenPaused();
-    if (songIndex < 6) {
-        songIndex++;
+    songIndex = (songIndex + 1) % 6;
+    if (songIndex == 0) songIndex = 1;
+    player = document.getElementById(`s${songIndex}`)
+    updateplay();
+    audioElement = new Audio(`songs/${songIndex}.mp3`);
+    whenPlayed();
+})
+
+// when backward button clicked
+backward.addEventListener('click', () => {
+    whenPaused();
+    songIndex--;
+    if (songIndex < 1) {
+        songIndex = 5;
+        player = document.getElementById(`s${songIndex}`)
         audioElement = new Audio(`songs/${songIndex}.mp3`);
         console.log(songIndex);
     }
     else {
-        songIndex = 0;
-        new Audio(`songs/${songIndex}.mp3`);
+        player = document.getElementById(`s${songIndex}`)
+        audioElement = new Audio(`songs/${songIndex}.mp3`);
         console.log(songIndex);
     }
-    myProgressBar.value = 0;
+    updateplay();
+    console.log(songIndex)
     console.log(myProgressBar.value);
     whenPlayed();
 })
 
 document.addEventListener('keydown', (e) => {
     songBanner.style.display = 'block';
-
     songBanner.style.backgroundSize = 'cover';
     console.log(e.code);
     if (e.code == 'Space' && audioElement.paused) {
-
         whenPlayed();
     }
     else if (e.code == 'Space' && audioElement.paused == false) {
-
         whenPaused();
     }
-
-
 })
 
-function whenPaused() {
 
-    // audioElement = new Audio(`songs/${songIndex}.mp3`)
+// Functions to play and pause individual songs
+function whenPaused() {
     audioElement.pause();
-    play.classList.remove('fa-pause');
-    play.classList.add('fa-play');
+    player.classList.remove('fa-pause');
+    player.classList.add('fa-play');
     masterPlay.classList.remove('fa-pause');
     masterPlay.classList.add('fa-play');
     gif.style.opacity = 0;
@@ -117,22 +115,17 @@ function whenPaused() {
 
 }
 function whenPlayed() {
-
     audioElement.play();
-    play.classList.remove('fa-play');
-    play.classList.add('fa-pause');
+    timeupdater();
+    player.classList.remove('fa-play');
+    player.classList.add('fa-pause');
     masterPlay.classList.remove('fa-play');
     masterPlay.classList.add('fa-pause');
     gif.style.opacity = 1;
-
-    // songBanner.style.display = 'block'; 
-
     songBanner.style.background = `url('images/${songIndex}.jpg')`
-
     songBanner.style.backgroundSize = 'cover';
 }
 
-// audioElement.play();
 
 
 

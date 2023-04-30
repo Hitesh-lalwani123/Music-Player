@@ -55,7 +55,7 @@ nav ul li {
   font-family: 'Lobster', cursive;
   font-size: 1.3rem;
 
-}
+} 
 .brand img {
   width: 44px;
   padding: 0px 8px;
@@ -123,11 +123,22 @@ nav ul li {
 
 }
 
-#myProgressBar {
-  width: 80vw;
-  height: 0.8vh;
-  cursor: pointer;
-  color: red;
+
+
+#myProgressBar{
+  height:5px;
+  width:0px;
+  background-color: #f72b76;
+  border-radius: 3px;
+  transition: width;
+  transition-duration: 500ms;
+  transition-timing-function: ease-in-out;
+}
+
+#box{
+  width: 1000px;
+  border: 1px solid #f72b76;
+  border-radius: 5px;
 }
 
 .icons {
